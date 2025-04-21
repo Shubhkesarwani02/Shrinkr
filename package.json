@@ -1,0 +1,17 @@
+{
+  "name": "shortner",
+  "version": "1.0.0",
+  "description": "shortens your url within seconds",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^5.1.0",
+    "mongoose": "^8.13.2",
+    "nodemon": "^3.1.9",
+    "shortid": "^2.2.17"
+  }
+}
