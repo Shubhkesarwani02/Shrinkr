@@ -24,7 +24,7 @@ async function handleGetAnalytics(req, res) {
 }
 
 async function handleUrlRedirect(req, res) {
-  const shortId = req.params.shortId
+  const shortId = req.params.shortId;
   const entry = await URL.findOneAndUpdate(
     { shortId },
     {
@@ -35,7 +35,7 @@ async function handleUrlRedirect(req, res) {
       },
     }
   )
-  //error in the entry - entry coming out to be null
+  //entry == null bug...
   res.redirect(entry.redirectURL)
 }
 
