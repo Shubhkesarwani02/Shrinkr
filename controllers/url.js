@@ -1,22 +1,33 @@
 const shortid = require('shortid')
 const URL = require('../models/url')
+
 async function handleGenerateShortId(req, res) {
   const body = req.body
-  if (!body.url) return res.status(400).json({ error: 'url is required' })
-  const shortId = shortid()
+
+  if (!body.url) {
+    return res.status(400).json({ error: 'URL is required' })
+  }
+
+  const generatedShortId = shortid()
+
   await URL.create({
-    shortId: shortId,
+    shortId: generatedShortId,
     redirectURL: body.url,
     visitHistory: [],
   })
-  return res.render("home", {
-    id: shortId,
+
+  return res.render('home', {
+    id: generatedShortId,
   })
 }
 
 async function handleGetAnalytics(req, res) {
   const shortId = req.params.shortId
   const result = await URL.findOne({ shortId })
+
+  if (!result) {
+    return res.status(404).json({ error: 'Short URL not found' })
+  }
 
   return res.json({
     totalClicks: result.visitHistory.length,
@@ -25,7 +36,8 @@ async function handleGetAnalytics(req, res) {
 }
 
 async function handleUrlRedirect(req, res) {
-  const shortId = req.params.shortId;
+  const shortId = req.params.shortId
+
   const entry = await URL.findOneAndUpdate(
     { shortId },
     {
@@ -34,11 +46,19 @@ async function handleUrlRedirect(req, res) {
           timestamp: Date.now(),
         },
       },
-    }
+    },
+    { new: true }
   )
-  //entry == null bug...
-  if(!entry) res.json({msg: "entry is null"});
+
+  if (!entry) {
+    return res.status(404).json({ error: 'Short URL not found' })
+  }
+
   res.redirect(entry.redirectURL)
 }
 
-module.exports = { handleGenerateShortId, handleGetAnalytics, handleUrlRedirect }
+module.exports = {
+  handleGenerateShortId,
+  handleGetAnalytics,
+  handleUrlRedirect,
+}
