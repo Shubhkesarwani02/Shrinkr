@@ -54,7 +54,7 @@ async function handleUrlRedirect(req, res) {
     return res.status(404).json({ error: 'Short URL not found' })
   }
 
-  res.redirect(entry.redirectURL)
+  return res.redirect(entry.redirectURL)
 }
 
 module.exports = {
