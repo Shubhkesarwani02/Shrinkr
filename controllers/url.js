@@ -36,6 +36,7 @@ async function handleUrlRedirect(req, res) {
     }
   )
   //entry == null bug...
+  if(!entry) res.json({msg: "entry is null"});
   res.redirect(entry.redirectURL)
 }
 

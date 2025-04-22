@@ -12,8 +12,11 @@ connectMongoDb('mongodb://127.0.0.1:27017/shortner').then(() => {
 
 app.use(express.json())
 
-app.use('/url', urlRoute)
+app.get("/", (req, res)=>{
+  return res.json({msg: "Hello from Shortner"})
+})
 
+app.use('/url', urlRoute)
 app.listen(PORT, () => {
   console.log(`Server started at PORT:${PORT}`)
 })
