@@ -19,9 +19,9 @@ app.set('views', path.resolve('./views'))
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 
-app.use('/url', urlRoute)
 app.use('/', staticRoute)
-app.use('./user', userRoute)
+app.use('/url', urlRoute)
+app.use('/user', userRoute)
 app.listen(PORT, () => {
   console.log(`Server started at PORT:${PORT}`)
 })
