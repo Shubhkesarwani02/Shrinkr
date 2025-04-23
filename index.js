@@ -23,5 +23,5 @@ app.use('/', staticRoute)
 app.use('/url', urlRoute)
 app.use('/user', userRoute)
 app.listen(PORT, () => {
-  console.log(`Server started at PORT:${PORT}`)
+  console.log("Server started at PORT:", PORT)
 })
