@@ -23,7 +23,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
 
-app.use('/url', restrictToLoggedInUserOnly, urlRoute)//login to homepage infinite loop - bug
+app.use('/url', urlRoute)//login to homepage infinite loop - bug
 app.use('/user', userRoute)
 app.use('/', staticRoute)
 app.listen(PORT, () => {

@@ -3,7 +3,11 @@ const URL = require('../models/url')
 async function handleGenerateShortId(req, res) {
   const body = req.body
 
-  if (!body.url) {
+  let finalUrl = body.url
+  if (!/^https?:\/\//i.test(finalUrl)) {
+    finalUrl = 'https://' + finalUrl
+  }
+  if (!finalUrl) {
     return res.status(400).json({ error: 'URL is required' })
   }
 
@@ -11,7 +15,7 @@ async function handleGenerateShortId(req, res) {
 
   await URL.create({
     shortId: generatedShortId,
-    redirectURL: body.url,
+    redirectURL: finalUrl,
     visitHistory: [],
   })
 
