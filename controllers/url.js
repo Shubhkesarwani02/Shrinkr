@@ -17,6 +17,7 @@ async function handleGenerateShortId(req, res) {
     shortId: generatedShortId,
     redirectURL: finalUrl,
     visitHistory: [],
+    createdBy: req.user._id,
   })
 
   return res.render('home', {

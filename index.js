@@ -7,7 +7,7 @@ const { connectMongoDb } = require('./connection')
 const staticRoute = require('./routes/staticRouter')
 const urlRoute = require('./routes/url')
 const userRoute = require('./routes/user')
-const { restrictToLoggedInUserOnly } = require('./middlewares/auth')
+const { restrictToLoggedInUserOnly, checkAuth } = require('./middlewares/auth')
 
 const app = express()
 const PORT = 5001
@@ -25,7 +25,7 @@ app.use(cookieParser())
 
 app.use('/url', restrictToLoggedInUserOnly, urlRoute)
 app.use('/user', userRoute)
-app.use('/', staticRoute)
+app.use('/',checkAuth, staticRoute)
 app.listen(PORT, () => {
   console.log("Server started at PORT:", PORT)
 })
