@@ -37,8 +37,6 @@ async function handleUserLogin(req, res) {
 
   const token = setUser(user)
   res.cookie('uid', token)
-  //instead of making cookie and redirecting, send res,json({token})
-  //and pass this to the middleware
   return res.redirect('/')
 }
 
