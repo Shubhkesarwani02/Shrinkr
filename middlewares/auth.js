@@ -1,43 +1,27 @@
 const { getUser } = require("../service/auth");
 
-async function restrictToLoggedInUserOnly(req, res, next) {
-  const userUid = req.cookies?.uid;
-
-  if (!userUid) return res.redirect("/login");
-
-  let user;
-  try {
-    user = getUser(userUid);
-  } catch (err) {
-    console.error("JWT error:", err.message);
-    return res.redirect("/login");
-  }
-
-  if (!user) return res.redirect("/login");
+function checkAuthentication(req, res, next) {
+  const tokenValue = req.cookies?.token;
+  req.user = null;
+  if (!tokenValue) return next();
+  const token = tokenValue;
+  const user = getUser(token);
 
   req.user = user;
-  next();
+  return next();
 }
 
-async function checkAuth(req, res, next) {
-  const userUid = req.cookies?.uid;
+function restrictTo(roles = []) {
+  return function (req, res, next) {
+    if (!req.user) return res.redirect("/login");
 
-  if (!userUid) {
-    req.user = null;
+    if (!roles.includes(req.user.role)) return res.end("Unauthorized");
+
     return next();
-  }
-  try {
-    const user = getUser(userUid);
-    req.user = user;
-  } catch (err) {
-    console.error("JWT error:", err.message);
-    req.user = null;
-  }
-
-  next();
+  };
 }
 
 module.exports = {
-  restrictToLoggedInUserOnly,
-  checkAuth,
+  checkAuthentication,
+  restrictTo,
 };
