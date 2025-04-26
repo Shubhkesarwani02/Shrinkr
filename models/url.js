@@ -18,10 +18,6 @@ const urlSchema = new mongoose.Schema(
         },
       },
     ],
-    createdBy:{///not working
-      type: mongoose.Schema.Types.ObjectId,
-      ref:'users'
-    }
   },
   { timestamps: true }
 );
